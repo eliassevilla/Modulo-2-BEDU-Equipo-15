@@ -97,5 +97,10 @@ indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
 indices.2005.total.plot
 
 
+########################################################################################################
+#####                            Graficar la informacion de indices                                 ####
+########################################################################################################
 
+modelo.general <- lm(indices.2005$General ~ indices.2005$Subyacente + indices.2005$Nosubyacente)
+summary(modelo.general)
 
