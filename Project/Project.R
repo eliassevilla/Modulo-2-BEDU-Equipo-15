@@ -4,9 +4,9 @@
 ########################################################################################################
 
 
-install.packages("lubridate")
+#install.packages("lubridate")
 install.packages("dplyr")
-install.packages("pool")
+#install.packages("pool")
 install.packages("ggplot2")
 
 
@@ -17,6 +17,7 @@ install.packages("ggplot2")
 
 library(dplyr)
 library(ggplot2)
+library(lubridate)
 
 
 ########################################################################################################
@@ -146,6 +147,17 @@ indices.2005.total.plot
 
 
 indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
+                                        indices.2005.agropecuarios,
+                                        indices.2005.energeticos),
+                                  aes(x, y, col = group)) + geom_line()
+
+indices.2005.total.plot
+
+indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
+                                        indices.2005.subyacente,
+                                        indices.2005.mercancias,
+                                        indices.2005.servicios,
+                                        indices.2005.nosubyacente,
                                         indices.2005.agropecuarios,
                                         indices.2005.energeticos),
                                   aes(x, y, col = group)) + geom_line()
