@@ -192,6 +192,7 @@ summary(modelo.componentes)
 
 
 indices.2005.general.ts <- ts(indices.2005$General, start = 2005, freq = 12)
+(indices.2005.general.ts)
 
 plot(indices.2005.general.ts, 
      main = "Inflación en México", 
@@ -210,12 +211,12 @@ indices.2005.general.ts.aditivo <- decompose(indices.2005.general.ts)
 plot(indices.2005.general.ts.aditivo, xlab = "Tiempo", 
      sub = "Descomposición de los datos de inflacion")
 
-Tendencia <- indices.2005.general.ts.aditivo$trend
-Estacionalidad <- indices.2005.general.ts.aditivo$seasonal
-Aleatorio <- indices.2005.general.ts.aditivo$random
+Tendencia.aditivo <- indices.2005.general.ts.aditivo$trend
+Estacionalidad.aditivo <- indices.2005.general.ts.aditivo$seasonal
+Aleatorio.aditivo <- indices.2005.general.ts.aditivo$random
 
-ts.plot(cbind(Tendencia, Tendencia + Estacionalidad), 
-        xlab = "Tiempo", main = "Inflación en México", 
+ts.plot(cbind(Tendencia.aditivo, Tendencia.aditivo + Estacionalidad.aditivo), 
+        xlab = "Tiempo", main = "Inflación en México (modelo aditivo)", 
         ylab = "Inflación", lty = 1:2)
 
 
@@ -229,16 +230,67 @@ indices.2005.general.ts.multiplicativo <- decompose(indices.2005.general.ts, typ
 plot(indices.2005.general.ts.multiplicativo, xlab = "Tiempo", 
      sub = "Descomposición de los datos de inflación")
 
-Trend <- indices.2005.general.ts.multiplicativo$trend
-Seasonal <- indices.2005.general.ts.multiplicativo$seasonal
-Random <- indices.2005.general.ts.multiplicativo$random
+Trend.multiplicativo <- indices.2005.general.ts.multiplicativo$trend
+Seasonal.multiplicativo <- indices.2005.general.ts.multiplicativo$seasonal
+Random.multiplicativo <- indices.2005.general.ts.multiplicativo$random
 
-ts.plot(cbind(Trend, Trend*Seasonal), xlab = "Tiempo", main = "Inflación en México", 
+ts.plot(cbind(Trend.multiplicativo, Trend.multiplicativo*Seasonal.multiplicativo), xlab = "Tiempo", main = "Inflación en México (modelo multiplicativo)", 
         ylab = "Inflación", lty = 1:2)
 
 
+########################################################################################################
+#####                                         Predicción                                            ####
+########################################################################################################
 
 
+
+# Función para buscar un buen modelo
+
+get.best.arima <- function(x.ts, maxord = c(1, 1, 1, 1, 1, 1)){
+  best.aic <- 1e8
+  n <- length(x.ts)
+  for(p in 0:maxord[1])for(d in 0:maxord[2])for(q in 0:maxord[3])
+    for(P in 0:maxord[4])for(D in 0:maxord[5])for(Q in 0:maxord[6])
+    {
+      fit <- arima(x.ts, order = c(p, d, q),
+                   seas = list(order = c(P, D, Q),
+                               frequency(x.ts)), method = "CSS")
+      fit.aic <- -2*fit$loglik + (log(n) + 1)*length(fit$coef)
+      if(fit.aic < best.aic){
+        best.aic <- fit.aic
+        best.fit <- fit
+        best.model <- c(p, d, q, P, D, Q)
+      }
+    }
+  list(best.aic, best.fit, best.model)
+}
+
+# Nuevo ajuste a los datos de la serie transformada de producción 
+# de electricidad
+
+best.arima.elec <- get.best.arima(log(indices.2005.general.ts),
+                                  maxord = c(2, 2, 2, 2, 2, 2))
+
+best.fit.elec <- best.arima.elec[[2]]  # Modelo
+best.arima.elec[[3]] # Tipo de modelo (órdenes)
+best.fit.elec
+best.arima.elec[[1]] # AIC
+###
+
+# ACF para residuales del ajuste
+
+acf(resid(best.fit.elec), main = "")
+title(main = "Correlograma de los residuales del ajuste")
+
+###
+# Predicción
+
+pr <- predict(best.fit.elec, 12)$pred 
+ts.plot(cbind(window(indices.2005.general.ts, start = c(2005,1)),
+              exp(pr)), col = c("blue", "red"), xlab = "")
+title(main = "Predicción para la serie de producción de electricidad",
+      xlab = "Mes",
+      ylab = "Producción de electricidad (GWh)")
 
 
 
