@@ -17,7 +17,6 @@ ui <-
                     menuItem("Histograma", tabName = "Dashboard", icon = icon("dashboard")),
                     menuItem("Imagenes postwork 3", tabName = "img1", icon = icon("file-picture-o")),
                     menuItem("Factores de ganancia", tabName = "img2", icon = icon("file-picture-o")),
-                    menuItem("Dispersión", tabName = "graph", icon = icon("area-chart")),
                     menuItem("Data Table", tabName = "data_table", icon = icon("table"))
                 )
                 
@@ -32,11 +31,12 @@ ui <-
                             fluidRow(
                                 titlePanel("Histograma de las variables del data set mtcars"), 
                                 selectInput("x", "Seleccione el valor de X",
-                                            choices = names(mtcars)),
+                                            #choices = names(read.csv('match.data.csv'))),
+                                            choices = c("home.score", "away.score")),
                                 
                                 selectInput("zz", "Selecciona la variable del grid", 
                                             
-                                            choices = c("cyl", "vs", "gear", "carb")),
+                                            choices = c("home.score", "away.score")),
                                 box(plotOutput("plot1", height = 250)),
                                 
                                 box(
@@ -45,22 +45,6 @@ ui <-
                                 )
                             )
                     ),
-                    
-                    # Dispersión
-                    tabItem(tabName = "graph", 
-                            fluidRow(
-                                titlePanel(h3("Gráficos de dispersión")),
-                                selectInput("a", "Selecciona el valor de x",
-                                            choices = names(mtcars)),
-                                selectInput("y", "Seleccione el valor de y",
-                                            choices = names(mtcars)),
-                                selectInput("z", "Selecciona la variable del grid", 
-                                            choices = c("cyl", "vs", "gear", "carb")),
-                                box(plotOutput("output_plot", height = 300, width = 460) )
-                                
-                            )
-                    ),
-                    
                     
                     
                     tabItem(tabName = "data_table",
@@ -100,11 +84,12 @@ server <- function(input, output) {
     
     #Gráfico de Histograma
     output$plot1 <- renderPlot({
+        our.data <- read.csv('match.data.csv');
         
-        x <- mtcars[,input$x]
+        x <- our.data[,input$x]
         bin <- seq(min(x), max(x), length.out = input$bins + 1)
         
-        ggplot(mtcars, aes(x, fill = mtcars[,input$zz])) + 
+        ggplot(our.data, aes(x, fill = our.data[,input$zz])) + 
             geom_histogram( breaks = bin) +
             labs( xlim = c(0, max(x))) + 
             theme_light() + 
@@ -113,19 +98,6 @@ server <- function(input, output) {
         
         
     })
-    
-    # Gráficas de dispersión
-    output$output_plot <- renderPlot({ 
-        
-        ggplot(mtcars, aes(x =  mtcars[,input$a] , y = mtcars[,input$y], 
-                           colour = mtcars[,input$z] )) + 
-            geom_point() +
-            ylab(input$y) +
-            xlab(input$a) + 
-            theme_linedraw() + 
-            facet_grid(input$z)  #selección del grid
-        
-    })   
     
     #Data Table
     output$data_table <- renderDataTable( {read.csv('match.data.csv')}, 
