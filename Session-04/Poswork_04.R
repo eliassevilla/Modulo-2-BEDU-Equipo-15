@@ -1,3 +1,7 @@
+# Ahora investigarás la dependencia o independencia del número de goles anotados por el equipo de casa y el número de goles 
+# anotados por el equipo visitante mediante un procedimiento denominado bootstrap, revisa bibliografía en internet para que 
+# tengas nociones de este desarrollo.
+
 install.packages("tidyvers")
 
 library(dplyr)
@@ -25,8 +29,20 @@ tablex <- prop.table(table(x))
 tabley <- prop.table(table(y))
 tablexy <- prop.table(table(x,y))
 
+# 1. Ya hemos estimado las probabilidades conjuntas de que el equipo de casa anote X=x goles (x=0,1,... ,8), y el equipo 
+# visitante anote Y=y goles (y=0,1,... ,6), en un partido. Obtén una tabla de cocientes al dividir estas probabilidades 
+# conjuntas por el producto de las probabilidades marginales correspondientes.
+
 cocientes <- sweep(tablexy, MARGIN = 1, 1/tablex, `*`)
 cocientes <- sweep(cocientes, MARGIN = 2, 1/tabley, `*`)
+cocientes
+
+# 2. Mediante un procedimiento de boostrap, obtén más cocientes similares a los obtenidos en la tabla del punto anterior. 
+# Esto para tener una idea de las distribuciones de la cual vienen los cocientes en la tabla anterior. Menciona en cuáles casos 
+# le parece razonable suponer que los cocientes de la tabla en el punto 1, son iguales a 1 (en tal caso tendríamos independencia 
+# de las variables aleatorias X y Y).
+
+# Repetir n veces (1000 veces)
 
 newx <- sample(x, replace = TRUE)
 bootstrapx <- prop.table(table(newx))
@@ -39,4 +55,4 @@ bootstrapxy <- prop.table(table(newx, newy))
 bootstrap.cocientes <- sweep(bootstrapxy, MARGIN = 2, 1/bootstrapy, `*`)
 bootstrap.cocientes <- sweep(bootstrap.cocientes, MARGIN = 1, 1/bootstrapx, `*`)
 bootstrap.cocientes
-
+  
