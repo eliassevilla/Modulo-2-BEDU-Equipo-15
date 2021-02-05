@@ -55,4 +55,5 @@ bootstrapxy <- prop.table(table(newx, newy))
 bootstrap.cocientes <- sweep(bootstrapxy, MARGIN = 2, 1/bootstrapy, `*`)
 bootstrap.cocientes <- sweep(bootstrap.cocientes, MARGIN = 1, 1/bootstrapx, `*`)
 bootstrap.cocientes
-  
+
+# Si los coeficientes de la matriz de bootstrap son iguales o mayores a 1 existe independencia  
