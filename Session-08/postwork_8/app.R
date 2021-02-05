@@ -2,7 +2,6 @@ library(shiny)
 library(shinydashboard)
 library(shinythemes)
 
-#Esta parte es el análogo al ui.R
 ui <- 
     
     fluidPage(
@@ -29,7 +28,7 @@ ui <-
                     # Histograma
                     tabItem(tabName = "Dashboard",
                             fluidRow(
-                                titlePanel("Histograma de las variables del data set mtcars"), 
+                                titlePanel("Histograma de las variables del data set match.data"), 
                                 selectInput("x", "Seleccione el valor de X",
                                             #choices = names(read.csv('match.data.csv'))),
                                             choices = c("home.score", "away.score")),
