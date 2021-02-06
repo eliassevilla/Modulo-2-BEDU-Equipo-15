@@ -123,25 +123,30 @@ paste("En la fecha", indices.2005.groupdata$x[indices.2005.mingroup], "la catego
 ########################################################################################################
 
 
-indices.2005.general.plot <- ggplot(indices.2005.general, aes(x, y, col = group)) + geom_line()
+indices.2005.general.plot <- ggplot(indices.2005.general, aes(x, y, col = group)) + 
+                             geom_line()  + ggtitle("Inflación en México 2005 - 2020") + 
+                             xlab("Periodo") + ylab("Inflación ( % )") +
+                             labs(col = "Tipo de inflación")
+
 indices.2005.general.plot
 
 indices.2005.subgeneral.plot <- ggplot( rbind(indices.2005.general,
                                        indices.2005.subyacente,
                                        indices.2005.nosubyacente),
-                                 aes(x, y, col = group)) + geom_line()
+                                aes(x, y, col = group)) + geom_line() + 
+                                ggtitle("Inflación en México 2005 - 2020") + 
+                                xlab("Periodo") + ylab("Inflación ( % )") +
+                                labs(col = "Tipo de inflación")
+
 indices.2005.subgeneral.plot
-
-
-ts.plot(cbind(Trend, Trend*Seasonal), , main = "Datos de Producción de Electricidad", 
-        ylab = "Producción de electricidad", lty = 1:2,
-        sub = "Tendencia con efectos estacionales multiplicativos sobrepuestos")
-
 
 indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
                                   indices.2005.mercancias,
                                   indices.2005.servicios),
-                            aes(x, y, col = group)) + geom_line()
+                           aes(x, y, col = group)) + geom_line() +
+                           ggtitle("Inflación en México 2005 - 2020") + 
+                           xlab("Periodo") + ylab("Inflación ( % )") +
+                           labs(col = "Tipo de inflación")
 
 indices.2005.total.plot
 
@@ -149,7 +154,10 @@ indices.2005.total.plot
 indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
                                         indices.2005.agropecuarios,
                                         indices.2005.energeticos),
-                                  aes(x, y, col = group)) + geom_line()
+                           aes(x, y, col = group)) + geom_line() +
+                           ggtitle("Inflación en México 2005 - 2020") + 
+                           xlab("Periodo") + ylab("Inflación ( % )") +
+                           labs(col = "Tipo de inflación")
 
 indices.2005.total.plot
 
@@ -160,7 +168,10 @@ indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
                                         indices.2005.nosubyacente,
                                         indices.2005.agropecuarios,
                                         indices.2005.energeticos),
-                                  aes(x, y, col = group)) + geom_line()
+                           aes(x, y, col = group)) + geom_line() +
+                           ggtitle("Inflación en México 2005 - 2020") + 
+                           xlab("Periodo") + ylab("Inflación ( % )") +
+                           labs(col = "Tipo de inflación")
 
 indices.2005.total.plot
 
@@ -173,7 +184,8 @@ indices.2005.total.plot
 ggplot(indices.2005.groupdata, aes(x = group, y = y, fill = group)) + geom_boxplot() +
   ggtitle("Boxplots de tipo de inflaciones") +
   xlab("Categorías") +
-  ylab("Inflación")
+  ylab("Inflación") +
+  labs(fill = "Tipo de inflación")
 
 ########################################################################################################
 #####                                      Regresion Lineal                                         ####
@@ -291,6 +303,5 @@ ts.plot(cbind(window(indices.2005.general.ts, start = c(2005,1)),
 title(main = "Predicción para la serie de producción de electricidad",
       xlab = "Mes",
       ylab = "Producción de electricidad (GWh)")
-
 
 
