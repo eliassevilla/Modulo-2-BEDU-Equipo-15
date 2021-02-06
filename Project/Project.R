@@ -8,6 +8,7 @@
 install.packages("dplyr")
 #install.packages("pool")
 install.packages("ggplot2")
+install.packages("forecast")
 
 
 ########################################################################################################
@@ -18,6 +19,7 @@ install.packages("ggplot2")
 library(dplyr)
 library(ggplot2)
 library(lubridate)
+library(forecast)
 
 
 ########################################################################################################
@@ -255,53 +257,16 @@ ts.plot(cbind(Trend.multiplicativo, Trend.multiplicativo*Seasonal.multiplicativo
 ########################################################################################################
 
 
+modelo <- auto.arima(indices.2005.general.ts)
+summary(modelo)
 
-# Función para buscar un buen modelo
+pronostico <- forecast(modelo,12,level=95)
 
-get.best.arima <- function(x.ts, maxord = c(1, 1, 1, 1, 1, 1)){
-  best.aic <- 1e8
-  n <- length(x.ts)
-  for(p in 0:maxord[1])for(d in 0:maxord[2])for(q in 0:maxord[3])
-    for(P in 0:maxord[4])for(D in 0:maxord[5])for(Q in 0:maxord[6])
-    {
-      fit <- arima(x.ts, order = c(p, d, q),
-                   seas = list(order = c(P, D, Q),
-                               frequency(x.ts)), method = "CSS")
-      fit.aic <- -2*fit$loglik + (log(n) + 1)*length(fit$coef)
-      if(fit.aic < best.aic){
-        best.aic <- fit.aic
-        best.fit <- fit
-        best.model <- c(p, d, q, P, D, Q)
-      }
-    }
-  list(best.aic, best.fit, best.model)
-}
+pronostico 
 
-# Nuevo ajuste a los datos de la serie transformada de producción 
-# de electricidad
-
-best.arima.elec <- get.best.arima(log(indices.2005.general.ts),
-                                  maxord = c(2, 2, 2, 2, 2, 2))
-
-best.fit.elec <- best.arima.elec[[2]]  # Modelo
-best.arima.elec[[3]] # Tipo de modelo (órdenes)
-best.fit.elec
-best.arima.elec[[1]] # AIC
-###
-
-# ACF para residuales del ajuste
-
-acf(resid(best.fit.elec), main = "")
-title(main = "Correlograma de los residuales del ajuste")
-
-###
-# Predicción
-
-pr <- predict(best.fit.elec, 12)$pred 
-ts.plot(cbind(window(indices.2005.general.ts, start = c(2005,1)),
-              exp(pr)), col = c("blue", "red"), xlab = "")
-title(main = "Predicción para la serie de producción de electricidad",
-      xlab = "Mes",
-      ylab = "Producción de electricidad (GWh)")
+plot(pronostico,
+     main = 'Pronóstico con auto.arima',
+     xlab ='Años',
+     ylab = '%')
 
 
