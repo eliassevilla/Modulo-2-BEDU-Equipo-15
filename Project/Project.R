@@ -1,6 +1,6 @@
 
 ########################################################################################################
-#####                                   Instalar librer韆s                                          ####
+#####                                   Instalar librer铆as                                          ####
 ########################################################################################################
 
 
@@ -12,7 +12,7 @@ install.packages("forecast")
 
 
 ########################################################################################################
-#####                                   Utilizar librer韆s                                          ####
+#####                                   Utilizar librer铆as                                          ####
 ########################################################################################################
 
 
@@ -27,7 +27,7 @@ library(forecast)
 ########################################################################################################
 
 
-data <- read.csv("indicadores.csv", fileEncoding="UTF-8-BOM")
+data <- read.csv("https://raw.githubusercontent.com/eliassevilla/Modulo-2-BEDU-Equipo-15/main/Project/Indicadores.csv", fileEncoding="UTF-8-BOM")
 str(data)                                                                                    ###################
 data <- select(data, General:Energeticos)                                                    ## Hacer una vez ##
 data <- mutate(data, Periodo= seq(ymd("1970-1-1"), ymd("2020-12-1"), by = "months"))         ###################
@@ -73,10 +73,10 @@ tail(indices.2005)
 
 
 indices.2005.maxgeneral <- which.max(indices.2005$General)
-paste("En la fecha", indices.2005$Periodo[indices.2005.maxgeneral]," se presento la mayor inflaci髇 registrada de 2005 a 2020 con un" , indices.2005$General[indices.2005.maxgeneral], "%")
+paste("En la fecha", indices.2005$Periodo[indices.2005.maxgeneral]," se presento la mayor inflaci贸n registrada de 2005 a 2020 con un" , indices.2005$General[indices.2005.maxgeneral], "%")
 
 indices.2005.mingeneral <- which.min(indices.2005$General)
-paste("En la fecha", indices.2005$Periodo[indices.2005.mingeneral]," se presento la menor inflaci髇 registrada de 2005 a 2020 con un" , indices.2005$General[indices.2005.mingeneral], "%")
+paste("En la fecha", indices.2005$Periodo[indices.2005.mingeneral]," se presento la menor inflaci贸n registrada de 2005 a 2020 con un" , indices.2005$General[indices.2005.mingeneral], "%")
 
 
 ########################################################################################################
@@ -110,14 +110,14 @@ indices.2005.groupdata
 
 
 indices.2005.maxgroup <- which.max(indices.2005.groupdata$y)
-paste("En la fecha", indices.2005.groupdata$x[indices.2005.maxgroup], "la categor韆 de", 
+paste("En la fecha", indices.2005.groupdata$x[indices.2005.maxgroup], "la categor铆a de", 
       indices.2005.groupdata$group[indices.2005.maxgroup],
-      "se presento la mayor inflaci髇 registrada de 2005 a 2020 con el" , indices.2005.groupdata$y[indices.2005.maxgroup], "%")
+      "se presento la mayor inflaci贸n registrada de 2005 a 2020 con el" , indices.2005.groupdata$y[indices.2005.maxgroup], "%")
 
 indices.2005.mingroup <- which.min(indices.2005.groupdata$y)
-paste("En la fecha", indices.2005.groupdata$x[indices.2005.mingroup], "la categor韆 de", 
+paste("En la fecha", indices.2005.groupdata$x[indices.2005.mingroup], "la categor铆a de", 
       indices.2005.groupdata$group[indices.2005.mingroup],
-      "se presento la menor inflaci髇 registrada de 2005 a 2020 con el" , indices.2005.groupdata$y[indices.2005.mingroup], "%")
+      "se presento la menor inflaci贸n registrada de 2005 a 2020 con el" , indices.2005.groupdata$y[indices.2005.mingroup], "%")
 
 
 ########################################################################################################
@@ -126,9 +126,9 @@ paste("En la fecha", indices.2005.groupdata$x[indices.2005.mingroup], "la catego
 
 
 indices.2005.general.plot <- ggplot(indices.2005.general, aes(x, y, col = group)) + 
-                             geom_line()  + ggtitle("Inflaci髇 en M閤ico 2005 - 2020") + 
-                             xlab("Periodo") + ylab("Inflaci髇 ( % )") +
-                             labs(col = "Tipo de inflaci髇")
+                             geom_line()  + ggtitle("Inflaci贸n en M茅xico 2005 - 2020") + 
+                             xlab("Periodo") + ylab("Inflaci贸n ( % )") +
+                             labs(col = "Tipo de inflaci贸n")
 
 indices.2005.general.plot
 
@@ -136,9 +136,9 @@ indices.2005.subgeneral.plot <- ggplot( rbind(indices.2005.general,
                                        indices.2005.subyacente,
                                        indices.2005.nosubyacente),
                                 aes(x, y, col = group)) + geom_line() + 
-                                ggtitle("Inflaci髇 en M閤ico 2005 - 2020") + 
-                                xlab("Periodo") + ylab("Inflaci髇 ( % )") +
-                                labs(col = "Tipo de inflaci髇")
+                                ggtitle("Inflaci贸n en M茅xico 2005 - 2020") + 
+                                xlab("Periodo") + ylab("Inflaci贸n ( % )") +
+                                labs(col = "Tipo de inflaci贸n")
 
 indices.2005.subgeneral.plot
 
@@ -146,9 +146,9 @@ indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
                                   indices.2005.mercancias,
                                   indices.2005.servicios),
                            aes(x, y, col = group)) + geom_line() +
-                           ggtitle("Inflaci髇 en M閤ico 2005 - 2020") + 
-                           xlab("Periodo") + ylab("Inflaci髇 ( % )") +
-                           labs(col = "Tipo de inflaci髇")
+                           ggtitle("Inflaci贸n en M茅xico 2005 - 2020") + 
+                           xlab("Periodo") + ylab("Inflaci贸n ( % )") +
+                           labs(col = "Tipo de inflaci贸n")
 
 indices.2005.total.plot
 
@@ -157,9 +157,9 @@ indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
                                         indices.2005.agropecuarios,
                                         indices.2005.energeticos),
                            aes(x, y, col = group)) + geom_line() +
-                           ggtitle("Inflaci髇 en M閤ico 2005 - 2020") + 
-                           xlab("Periodo") + ylab("Inflaci髇 ( % )") +
-                           labs(col = "Tipo de inflaci髇")
+                           ggtitle("Inflaci贸n en M茅xico 2005 - 2020") + 
+                           xlab("Periodo") + ylab("Inflaci贸n ( % )") +
+                           labs(col = "Tipo de inflaci贸n")
 
 indices.2005.total.plot
 
@@ -171,9 +171,9 @@ indices.2005.total.plot <- ggplot(rbind(indices.2005.general,
                                         indices.2005.agropecuarios,
                                         indices.2005.energeticos),
                            aes(x, y, col = group)) + geom_line() +
-                           ggtitle("Inflaci髇 en M閤ico 2005 - 2020") + 
-                           xlab("Periodo") + ylab("Inflaci髇 ( % )") +
-                           labs(col = "Tipo de inflaci髇")
+                           ggtitle("Inflaci贸n en M茅xico 2005 - 2020") + 
+                           xlab("Periodo") + ylab("Inflaci贸n ( % )") +
+                           labs(col = "Tipo de inflaci贸n")
 
 indices.2005.total.plot
 
@@ -185,9 +185,9 @@ indices.2005.total.plot
 
 ggplot(indices.2005.groupdata, aes(x = group, y = y, fill = group)) + geom_boxplot() +
   ggtitle("Boxplots de tipo de inflaciones") +
-  xlab("Categor韆s") +
-  ylab("Inflaci髇") +
-  labs(fill = "Tipo de inflaci髇")
+  xlab("Categor铆as") +
+  ylab("Inflaci贸n") +
+  labs(fill = "Tipo de inflaci贸n")
 
 ########################################################################################################
 #####                                      Regresion Lineal                                         ####
@@ -209,9 +209,9 @@ indices.2005.general.ts <- ts(indices.2005$General, start = 2005, freq = 12)
 (indices.2005.general.ts)
 
 plot(indices.2005.general.ts, 
-     main = "Inflaci髇 en M閤ico", 
+     main = "Inflaci贸n en M茅xico", 
      xlab = "Tiempo",
-     ylab = "Inflaci髇",
+     ylab = "Inflaci贸n",
      sub = "Enero de 2005 - Diciembre de 2020")
 
 
@@ -223,15 +223,15 @@ plot(indices.2005.general.ts,
 indices.2005.general.ts.aditivo <- decompose(indices.2005.general.ts)
 
 plot(indices.2005.general.ts.aditivo, xlab = "Tiempo", 
-     sub = "Descomposici髇 de los datos de inflacion")
+     sub = "Descomposici贸n de los datos de inflacion")
 
 Tendencia.aditivo <- indices.2005.general.ts.aditivo$trend
 Estacionalidad.aditivo <- indices.2005.general.ts.aditivo$seasonal
 Aleatorio.aditivo <- indices.2005.general.ts.aditivo$random
 
 ts.plot(cbind(Tendencia.aditivo, Tendencia.aditivo + Estacionalidad.aditivo), 
-        xlab = "Tiempo", main = "Inflaci髇 en M閤ico (modelo aditivo)", 
-        ylab = "Inflaci髇", lty = 1:2)
+        xlab = "Tiempo", main = "Inflaci贸n en M茅xico (modelo aditivo)", 
+        ylab = "Inflaci贸n", lty = 1:2)
 
 
 ########################################################################################################
@@ -242,18 +242,18 @@ ts.plot(cbind(Tendencia.aditivo, Tendencia.aditivo + Estacionalidad.aditivo),
 indices.2005.general.ts.multiplicativo <- decompose(indices.2005.general.ts, type = "mult")
 
 plot(indices.2005.general.ts.multiplicativo, xlab = "Tiempo", 
-     sub = "Descomposici髇 de los datos de inflaci髇")
+     sub = "Descomposici贸n de los datos de inflaci贸n")
 
 Trend.multiplicativo <- indices.2005.general.ts.multiplicativo$trend
 Seasonal.multiplicativo <- indices.2005.general.ts.multiplicativo$seasonal
 Random.multiplicativo <- indices.2005.general.ts.multiplicativo$random
 
-ts.plot(cbind(Trend.multiplicativo, Trend.multiplicativo*Seasonal.multiplicativo), xlab = "Tiempo", main = "Inflaci髇 en M閤ico (modelo multiplicativo)", 
-        ylab = "Inflaci髇", lty = 1:2)
+ts.plot(cbind(Trend.multiplicativo, Trend.multiplicativo*Seasonal.multiplicativo), xlab = "Tiempo", main = "Inflaci贸n en M茅xico (modelo multiplicativo)", 
+        ylab = "Inflaci贸n", lty = 1:2)
 
 
 ########################################################################################################
-#####                                         Predicci髇                                            ####
+#####                                         Predicci贸n                                            ####
 ########################################################################################################
 
 
@@ -265,8 +265,8 @@ pronostico <- forecast(modelo,12,level=95)
 pronostico 
 
 plot(pronostico,
-     main = 'Pron髎tico con auto.arima',
-     xlab ='A駉s',
+     main = 'Pron贸stico con auto.arima',
+     xlab ='A帽os',
      ylab = '%')
 
 
